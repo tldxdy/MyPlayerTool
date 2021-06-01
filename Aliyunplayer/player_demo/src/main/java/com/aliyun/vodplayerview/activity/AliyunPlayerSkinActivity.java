@@ -1899,13 +1899,13 @@ public abstract class AliyunPlayerSkinActivity extends BaseActivity {
     }
 
     private void onError(com.aliyun.player.bean.ErrorInfo errorInfo) {
-        onErrorListenter(errorInfo);
+
         //鉴权过期
-       /* if (errorInfo.getCode().getValue() == ErrorCode.ERROR_SERVER_POP_UNKNOWN.getValue()) {
-            mIsTimeExpired = true;
-        }*/
+        if (errorInfo.getCode().getValue() == ErrorCode.ERROR_SERVER_POP_UNKNOWN.getValue()) {
+            onErrorListenter();
+        }
     }
-    public abstract void onErrorListenter(com.aliyun.player.bean.ErrorInfo errorInfo);
+    public abstract void onErrorListenter();
 
     /**
      * 字幕、清晰度、码率、音轨点击事件
@@ -2597,5 +2597,11 @@ public abstract class AliyunPlayerSkinActivity extends BaseActivity {
             GlobalPlayerConfig.mEnableHardDecodeType = savedInstanceState.getBoolean("mEnableHardDecodeType");
 
         }
+    }
+
+    public void setAuthInfo(){
+        VidAuth vidAuth = getVidAuth(GlobalPlayerConfig.mVid);
+        mCurrentVideoId = GlobalPlayerConfig.mVid;
+        mAliyunVodPlayerView.setAuthInfo(vidAuth);
     }
 }

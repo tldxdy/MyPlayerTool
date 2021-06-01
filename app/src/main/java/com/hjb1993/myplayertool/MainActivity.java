@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.aliyun.player.IPlayer;
 import com.aliyun.player.alivcplayerexpand.constants.GlobalPlayerConfig;
 import com.aliyun.player.aliyunplayerbase.bean.AliyunPlayAuth;
 import com.aliyun.player.aliyunplayerbase.net.GetAuthInformation;
@@ -87,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         GlobalPlayerConfig.PlayConfig.mAutoSwitchOpen = true;
         GlobalPlayerConfig.PlayConfig.mEnablePlayBackground = false;
         GlobalPlayerConfig.PlayConfig.mEnableAccurateSeekModule = true;
-        GlobalPlayerConfig.mRotateMode = IPlayer.RotateMode.ROTATE_0;
-        GlobalPlayerConfig.mMirrorMode = IPlayer.MirrorMode.MIRROR_MODE_NONE;
         GlobalPlayerConfig.mCurrentPlayType = GlobalPlayerConfig.PLAYTYPE.AUTH;
     }
 
