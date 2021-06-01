@@ -1,0 +1,2 @@
+include ':app', ':AliyunVideoCommon', ':AliyunPlayerBase', ':Aliyunplayer:AlivcPlayerTools', ':Aliyunplayer:player_demo', ':zxing'
+rootProject.name='MyPlayerTool'
