@@ -48,7 +48,6 @@ import com.aliyun.player.alivcplayerexpand.view.function.AdvPictureView;
 import com.aliyun.player.alivcplayerexpand.view.function.AdvVideoView;
 import com.aliyun.player.alivcplayerexpand.view.function.MarqueeView;
 import com.aliyun.player.alivcplayerexpand.view.function.MutiSeekBarView;
-import com.aliyun.player.alivcplayerexpand.view.function.PlayerDanmakuView;
 import com.aliyun.player.alivcplayerexpand.view.function.WaterMarkRegion;
 import com.aliyun.player.alivcplayerexpand.view.gesture.GestureDialogManager;
 import com.aliyun.player.alivcplayerexpand.view.gesture.GestureView;
@@ -235,8 +234,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
     private long mAdvDuration;
     //视频广告View
     private AdvVideoView mAdvVideoView;
-    //弹幕view
-    private PlayerDanmakuView mDanmakuView;
     //水印
     private ImageView mWaterMark;
     //试看View
@@ -403,8 +400,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         setTheme(Theme.Blue);
         //先隐藏手势和控制栏，防止在没有prepare的时候做操作。
         hideGestureAndControlViews();
-        //初始化弹幕
-        initDanmaku();
         //投屏
         initScreenCost();
         //初始化字幕
@@ -533,14 +528,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         });
     }
 
-    /**
-     * 初始化弹幕
-     */
-    private void initDanmaku() {
-        mDanmakuView = new PlayerDanmakuView(getContext());
-        mDanmakuView.hide();
-        addSubViewBelow(mDanmakuView, mMarqueeView);
-    }
 
     /**
      * 初始化水印
@@ -990,9 +977,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         }
         if (mGestureView != null) {
             mGestureView.reset();
-        }
-        if (mDanmakuView != null) {
-            mDanmakuView.clearDanmaList();
         }
         if (mAdvPictureView != null) {
             mAdvPictureView.cancel();
@@ -1996,9 +1980,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
             mSpeedView.setScreenMode(finalScreenMode);
         }
 
-        if (mDanmakuView != null) {
-            mDanmakuView.setScreenMode(finalScreenMode);
-        }
 
         if (mMarqueeView != null) {
             mMarqueeView.setScreenMode(finalScreenMode);
@@ -2040,9 +2021,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
                     ViewGroup.LayoutParams aliVcVideoViewLayoutParams = getLayoutParams();
                     aliVcVideoViewLayoutParams.height = (int) (ScreenUtils.getWidth(context) * 9.0f / 16);
                     aliVcVideoViewLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                }
-                if (mDanmakuView != null) {
-                    mDanmakuView.hide();
                 }
                 if (mMarqueeView != null) {
                     mMarqueeView.pause();
@@ -2934,9 +2912,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         if (mCurrentScreenMode == AliyunScreenMode.Small) {
             return;
         }
-        if (GlobalPlayerConfig.IS_BARRAGE && mDanmakuView != null) {
-            mDanmakuView.show();
-        }
         if (GlobalPlayerConfig.IS_MARQUEE && mMarqueeView != null) {
             mMarqueeView.createAnimation();
             mMarqueeView.startFlip();
@@ -2947,9 +2922,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
      * 隐藏弹幕和跑马灯
      */
     private void hideDanmakuAndMarquee() {
-        if (mDanmakuView != null && mDanmakuView.isShown()) {
-            mDanmakuView.hide();
-        }
         if (mMarqueeView != null && mMarqueeView.isStart()) {
             mMarqueeView.stopFlip();
         }
@@ -2960,16 +2932,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
      */
     public void needOnlyFullScreenPlay(boolean isNeed){
         mIsNeedOnlyFullScreen = isNeed;
-    }
-
-    /**
-     * 隐藏弹幕
-     */
-    public void hideDanmakuView() {
-        if (mDanmakuView != null) {
-            mDanmakuView.hideAndPauseDrawTask();
-            mDanmakuView.setVisibility(View.GONE);
-        }
     }
 
     /**
@@ -3886,9 +3848,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
             if (mMarqueeView != null) {
                 mMarqueeView.stopFlip();
             }
-            if (mDanmakuView != null) {
-                mDanmakuView.hide();
-            }
             if (mSurfaceView != null) {
                 mSurfaceView.setVisibility(View.GONE);
             }
@@ -4081,9 +4040,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         } else if (infoBean.getCode() == InfoCode.CurrentPosition) {
             //更新currentPosition
             mCurrentPosition = infoBean.getExtraValue();
-            if (mDanmakuView != null) {
-                mDanmakuView.setCurrentPosition((int) mCurrentPosition);
-            }
             if (mControlView != null) {
                 //如果是试看视频,并且试看已经结束了,要屏蔽其他按钮的操作
                 mControlView.setOtherEnable(true);
@@ -4754,9 +4710,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
      * 更新弹幕
      */
     public void setmDanmaku(String danmu) {
-        if (mDanmakuView != null) {
-            mDanmakuView.addDanmaku(danmu, mCurrentPosition);
-        }
         if (mAliyunRenderView != null) {
             mAliyunRenderView.start();
         }
@@ -4939,33 +4892,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         return mScreenCostingVolume;
     }
 
-    /**
-     * 设置弹幕透明度
-     * 0无透明---100全透明
-     */
-    public void setDanmakuAlpha(int progress) {
-        if (mDanmakuView != null) {
-            mDanmakuView.setAlpha((float) (1 - progress / 100.0 * 1.0));
-        }
-    }
 
-    /**
-     * 设置弹幕速率
-     */
-    public void setDanmakuSpeed(int progress) {
-        if (mDanmakuView != null) {
-            mDanmakuView.setDanmakuSpeed((float) (2.5 - (100 + progress) / 100.0 * 1.0));
-        }
-    }
-
-    /**
-     * 设置弹幕显示区域
-     */
-    public void setDanmakuRegion(int progress) {
-        if (mDanmakuView != null) {
-            mDanmakuView.setDanmakuRegion(progress);
-        }
-    }
 
     /**
      * 投屏播放
@@ -5004,16 +4931,6 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         }
     }
 
-    /**
-     * 恢复弹幕设置
-     */
-    public void setDanmakuDefault() {
-        if (mDanmakuView != null) {
-            setDanmakuAlpha(DanmakuSettingView.ALPHA_PROGRESS_DEFAULT);
-            setDanmakuSpeed(DanmakuSettingView.SPEED_PROGRESS_DEFAULT);
-            setDanmakuRegion(DanmakuSettingView.REGION_PROGRESS_DEFAULT);
-        }
-    }
 
     /**
      * 设置封面信息

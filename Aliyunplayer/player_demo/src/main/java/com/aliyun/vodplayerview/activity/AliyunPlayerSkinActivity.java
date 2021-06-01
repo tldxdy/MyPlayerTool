@@ -76,7 +76,6 @@ import com.aliyun.player.bean.ErrorCode;
 import com.aliyun.player.bean.InfoBean;
 import com.aliyun.player.bean.InfoCode;
 import com.aliyun.player.nativeclass.CacheConfig;
-import com.aliyun.player.nativeclass.MediaInfo;
 import com.aliyun.player.nativeclass.PlayerConfig;
 import com.aliyun.player.nativeclass.TrackInfo;
 import com.aliyun.player.source.Definition;
@@ -1516,7 +1515,6 @@ public abstract class AliyunPlayerSkinActivity extends BaseActivity {
                 if (showMoreDialog != null && showMoreDialog.isShowing()) {
                     showMoreDialog.dismiss();
                 }
-                showDanmakuSettingView();
             }
         });
 
@@ -1646,92 +1644,6 @@ public abstract class AliyunPlayerSkinActivity extends BaseActivity {
 
     }
 
-    /**
-     * 显示弹幕设置对话框
-     */
-    private void showDanmakuSettingView() {
-        danmakuShowMoreDialog = new AlivcShowMoreDialog(this);
-        mDanmakuSettingView = new DanmakuSettingView(this);
-        mDanmakuSettingView.setAlphaProgress(mAlphProgress);
-        mDanmakuSettingView.setSpeedProgress(mSpeedProgress);
-        mDanmakuSettingView.setRegionProgress(mRegionProgress);
-        danmakuShowMoreDialog.setContentView(mDanmakuSettingView);
-        danmakuShowMoreDialog.show();
-
-        //透明度
-        mDanmakuSettingView.setOnAlphaSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mAlphProgress = progress;
-                if (mAliyunVodPlayerView != null) {
-                    mAliyunVodPlayerView.setDanmakuAlpha(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        //显示区域
-        mDanmakuSettingView.setOnRegionSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mRegionProgress = progress;
-                if (mAliyunVodPlayerView != null) {
-                    mAliyunVodPlayerView.setDanmakuRegion(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        //速率
-        mDanmakuSettingView.setOnSpeedSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSpeedProgress = progress;
-                if (mAliyunVodPlayerView != null) {
-                    mAliyunVodPlayerView.setDanmakuSpeed(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        //恢复默认
-        mDanmakuSettingView.setOnDefaultListener(new DanmakuSettingView.OnDefaultClickListener() {
-            @Override
-            public void onDefaultClick() {
-                if (mAliyunVodPlayerView != null) {
-                    mAliyunVodPlayerView.setDanmakuDefault();
-                }
-            }
-        });
-
-    }
 
     /**
      * 获取url的scheme
