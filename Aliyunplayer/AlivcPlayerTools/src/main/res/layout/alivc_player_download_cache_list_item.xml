@@ -23,9 +23,7 @@
         android:layout_marginRight="@dimen/alivc_common_margin_2"
         android:layout_marginBottom="@dimen/alivc_common_margin_2"
         android:layout_toEndOf="@+id/alivc_iv_selector"
-        android:layout_toRightOf="@+id/alivc_iv_selector"
-        app:cardCornerRadius="@dimen/alivc_common_radius_6"
-        app:cardElevation="0dp">
+        android:layout_toRightOf="@+id/alivc_iv_selector">
 
         <FrameLayout
             android:id="@+id/alivc_fl_font"
