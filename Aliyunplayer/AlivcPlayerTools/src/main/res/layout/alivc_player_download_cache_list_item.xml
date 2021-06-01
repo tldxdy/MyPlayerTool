@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/alivc_common_margin_8"
         android:visibility="gone" />
 
-    <CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/alivc_fl_image"
         android:layout_width="@dimen/alivc_common_size_icon_126"
         android:layout_height="@dimen/alivc_common_size_icon_70"
@@ -48,7 +48,7 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
         </FrameLayout>
-    </CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/alivc_tv_title"
