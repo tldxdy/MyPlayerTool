@@ -3045,7 +3045,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
     /**
      * 停止播放
      */
-    private void stop() {
+    public void stop() {
         Boolean hasLoadedEnd = null;
         MediaInfo mediaInfo = null;
         if (mAliyunRenderView != null && hasLoadEnd != null) {
@@ -3883,7 +3883,7 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
             }
         } else if (newState == IPlayer.started) {
             if (mControlView != null) {
-                mControlView.setPlayState(ControlView.PlayState.Playing);
+                mControlView.setPlayState(mControlView.mPlayState);
             }
         }
     }
@@ -4028,7 +4028,12 @@ public class AliyunVodPlayerView extends RelativeLayout implements ITheme {
         if (infoBean.getCode() == InfoCode.AutoPlayStart) {
             //自动播放开始,需要设置播放状态
             if (mControlView != null) {
-                mControlView.setPlayState(ControlView.PlayState.Playing);
+                if(GlobalPlayerConfig.PlayConfig.mAutoSwitchOpen){
+                    mControlView.setPlayState(ControlView.PlayState.Playing);
+                }else {
+                    mControlView.setPlayState(ControlView.PlayState.NotPlaying);
+                }
+
             }
             if (mOutAutoPlayListener != null) {
                 mOutAutoPlayListener.onAutoPlayStarted();

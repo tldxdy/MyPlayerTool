@@ -14,9 +14,14 @@ public class MyPlayerActivity extends AliyunPlayerSkinActivity {
     public void onPrepared() {
 
         if (mAliyunVodPlayerView != null) {
-            mAliyunVodPlayerView.setAutoPlay(true);
-            mAliyunVodPlayerView.onResume();
-            mAliyunVodPlayerView.start();
+            if(GlobalPlayerConfig.PlayConfig.mAutoSwitchOpen){
+                mAliyunVodPlayerView.setAutoPlay(true);
+                mAliyunVodPlayerView.start();
+            }else {
+                mAliyunVodPlayerView.setAutoPlay(false);
+                mAliyunVodPlayerView.pause();
+            }
+
         }
 
     }

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -68,7 +69,7 @@ public class ControlView extends RelativeLayout implements ViewAction, ITheme {
     //标题
     private TextView mTitlebarText;
     //视频播放状态
-    private PlayState mPlayState = PlayState.NotPlaying;
+    public PlayState mPlayState = PlayState.NotPlaying;
     //播放按钮
     private ImageView mPlayStateBtn;
 
@@ -1201,6 +1202,11 @@ public class ControlView extends RelativeLayout implements ViewAction, ITheme {
         } else if (mPlayState == PlayState.Playing) {
             mPlayStateBtn.setImageResource(R.drawable.alivc_playstate_pause);
         }
+    }
+
+    public void setmPlayStateBtn() {
+        mPlayState = PlayState.NotPlaying;
+        mPlayStateBtn.setImageResource(R.drawable.alivc_playstate_play);
     }
 
     /**
