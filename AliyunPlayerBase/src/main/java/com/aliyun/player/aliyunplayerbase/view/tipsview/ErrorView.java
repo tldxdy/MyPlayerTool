@@ -1,5 +1,6 @@
 package com.aliyun.player.aliyunplayerbase.view.tipsview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -88,9 +89,19 @@ public class ErrorView extends RelativeLayout {
      * @param errorEvent 错误事件
      * @param errMsg 错误码
      */
+    @SuppressLint("SetTextI18n")
     public void updateTips(int errorCode, String errorEvent, String errMsg) {
-        mMsgView.setText(errMsg);
+        if(errorCode <= 537067525){
+            mMsgView.setText("打开流失败");
+         }else if(errorCode <= 537198594){
+            mMsgView.setText("未知的网络错误");
+         }else if(errorCode <= 537198602){
+            mMsgView.setText("网络连接超时");
+        }else {
+            mMsgView.setText(errMsg);
+        }
         mCodeView.setText(getContext().getString(R.string.alivc_error_code) + errorCode + " - " + errorEvent);
+
     }
 
     /**
